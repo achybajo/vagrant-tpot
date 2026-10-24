@@ -1,0 +1,4 @@
+# usuario:contraseña:sudo        (la contraseña no puede contener ':')
+# sudo = yes | no
+admin:CAMBIAME_admin:yes
+pps:CAMBIAME_pps:no

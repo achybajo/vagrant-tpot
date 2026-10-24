@@ -1,0 +1,7 @@
+# Archivos con claves reales: NO subir
+users.conf
+tpot.conf
+
+# Estado local de Vagrant
+.vagrant/
+*.log

@@ -1,0 +1,8 @@
+# Comillas simples: el archivo se carga con "source" en bash.
+# TPOT_TYPE: h=hive, s=sensor, l=llm, i=mini, m=mobile, t=tarpit
+TPOT_TYPE='h'
+# Usuario de Linux que ejecuta el instalador (debe estar en users.conf con sudo=yes)
+TPOT_INSTALL_USER='admin'
+# Login de la web de T-Pot (https://IP:64297). No son usuarios de Linux.
+TPOT_WEB_USER='pps'
+TPOT_WEB_PASS='CAMBIAME_web'

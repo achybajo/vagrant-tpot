@@ -1,0 +1,6 @@
+# Forzar saltos de linea LF (evita errores en bash si se clona desde Windows)
+* text=auto
+*.sh        text eol=lf
+*.conf      text eol=lf
+*.example   text eol=lf
+Vagrantfile text eol=lf
