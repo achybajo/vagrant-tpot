@@ -2,42 +2,15 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "rockylinux/10"
+  config.vm.box = "almalinux/10"
   config.vm.hostname = "tpot-pps"
-
-  # Deshabilitar carpeta compartida para evitar bloqueos de sincronización
-  config.vm.synced_folder ".", "/vagrant", disabled: true
-
+  config.vm.network "private_network", ip: "192.168.56.10"
+#  config.vm.network "public_network", bridge: "Ethernet", ip: "192.168.1.50", use_dhcp_assigned_default_route: true
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = 8192
-    vb.cpus   = 4
-    vb.name   = "tpot-pps-node"
+    vb.memory = 16384
+    vb.cpus = 4
   end
-
-  # Redireccionamiento de puertos de administración T-Pot (NAT)
-  config.vm.network "forwarded_port", guest: 64294, host: 64294
-  config.vm.network "forwarded_port", guest: 64295, host: 64295
-
-  # Red Privada Host-Only: Canal de acceso estable independiente de Docker y T-Pot
-	config.vm.network "public_network", bridge: "en0: Ethernet"
-
-  config.vm.provision "shell", privileged: true, inline: <<-SHELL
-    set -e
-    echo "[*] Configurando permisos sudo e instalando dependencias..."
-    echo "vagrant ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/vagrant
-    chmod 0440 /etc/sudoers.d/vagrant
-    dnf update -y
-    dnf install -y git curl
-  SHELL
-
-#  config.vm.provision "shell", privileged: false, inline: <<-SHELL
-#    set -e
-#    if [ ! -d "/home/vagrant/tpotce" ]; then
-#        git clone https://github.com/telekom-security/tpotce.git /home/vagrant/tpotce
-#    fi
-#    echo "[*] Entorno preparado en /home/vagrant/tpotce"
-#  SHELL
- 
-  # Script automatizado que se ejecuta dentro de la VM tras el primer booteo
-  config.vm.provision "shell", path: "provision/setup.sh"
+  config.vm.provision "file", source: "tpot.conf",  destination: "/tmp/tpot.conf"
+  config.vm.provision "file", source: "users.conf", destination: "/tmp/users.conf"
+  config.vm.provision "shell", path: "provision.sh", privileged: true
 end
