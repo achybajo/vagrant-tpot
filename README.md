@@ -217,19 +217,16 @@ T-Pot mueve el SSH al puerto **64295**. Vagrant espera el puerto 22, así que `v
 | `Falta users.conf` o `tpot.conf` | No copiaste los `.example`. Ver paso 2. |
 | Error 404 al descargar la box | La box de Vagrant Cloud puede estar rota. Probá `vagrant box add almalinux/10 --provider virtualbox` para ver el error exacto y abrí un issue. |
 | Errores raros en la primera línea de `provision.sh` | Saltos de línea CRLF. Convertí a LF (`.gitattributes` lo evita al clonar con git). |
-| `bridge` no existe / la VM no tiene red | El nombre de la placa no coincide. Copialo tal cual de `VBoxManage list bridgedifs`. |
 | La instalación falla o se corta | Ver el mensaje en la consola. Con la VM aún en el SSH 22, `vagrant provision` reintenta. |
 | No puedo entrar por SSH con contraseña | El `sshd` de la box puede tener la autenticación por contraseña desactivada. Usá `vagrant ssh` antes de instalar T-Pot, o configurá una clave pública. |
 
 ## Limitaciones conocidas
 
 - **Disco:** la box trae un disco mucho menor a los 256 GB que pide T-Pot Hive. El `Vagrantfile` no lo amplía todavía. Si la instalación se queda sin espacio, hay que agrandar el disco de la VM y expandir el sistema de archivos.
-- **Una sola placa de red:** T-Pot está pensado para equipos con una sola interfaz. Se usa `public_network` con `use_dhcp_assigned_default_route` para que la ruta por defecto salga por la placa puenteada. Si hay problemas de red, empezá por ahí.
+- **Una sola placa de red:** T-Pot está pensado para equipos con una sola interfaz. 
 - **Box:** se usa `almalinux/10` de Vagrant Cloud. Si su disponibilidad cambia, se puede forzar otra con `config.vm.box`.
 
 ## Seguridad
 
 - T-Pot es un honeypot: está hecho para recibir ataques. Con `public_network` la VM queda visible para toda tu red local. No lo uses en una red con equipos importantes y no lo expongas a internet sin saber lo que hacés.
-- **No subas `users.conf` ni `tpot.conf` a GitHub.** El `.gitignore` ya los excluye; subí solo los `.example`.
 - Cambiá todas las contraseñas de ejemplo por unas fuertes.
-- Si el repo es público, no pongas IPs ni datos internos de tu red en los archivos versionados.
