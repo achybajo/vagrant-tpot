@@ -15,7 +15,7 @@ Levanta una VM con AlmaLinux 10 usando Vagrant + VirtualBox, la actualiza, crea 
 
 ## Requisitos
 
-- Equipo con procesador **Intel/AMD (x86_64)**. VirtualBox en Mac con Apple Silicon (M1/M2/M3...) no ejecuta VMs x86, así que esta solución no corre ahí.
+- Equipo con procesador **Intel/AMD (x86_64)**. VirtualBox en Mac con Apple Silicon (M1-M5).
 - **RAM:** la VM usa 16 GB. Conviene tener 24 GB o más en el equipo.
 - **Disco:** T-Pot Hive pide unos 256 GB. Ver [Limitaciones conocidas](#limitaciones-conocidas).
 - Conexión a internet (descarga la box, actualizaciones y T-Pot).
@@ -35,11 +35,6 @@ Descargas oficiales:
 2. Instalá **Vagrant** con el instalador (`.msi`) de la página oficial y **reiniciá** el equipo cuando lo pida.
 3. Instalá **Git** desde https://git-scm.com/download/win.
 
-Alternativa, si ya usás Chocolatey (PowerShell como administrador):
-
-```powershell
-choco install git virtualbox vagrant -y
-```
 
 Verificá en PowerShell:
 
@@ -48,7 +43,7 @@ vagrant --version
 & "C:\Program Files\Oracle\VirtualBox\VBoxManage.exe" --version
 ```
 
-> Si tenés Hyper-V o WSL2 activos, VirtualBox puede andar lento o fallar. Si te pasa, desactivá Hyper-V o usá otra máquina.
+> Si tenés Hyper-V o WSL2 activos, VirtualBox puede andar lento o fallar. Si te pasa, desactivá Hyper-V.
 
 ### Linux
 
@@ -126,7 +121,7 @@ En Windows (PowerShell) el copiado es: `Copy-Item users.conf.example users.conf`
 
 ## 3. Editar los archivos
 
-Usá un editor que respete los saltos de línea **LF** (VS Code lo muestra abajo a la derecha: tiene que decir `LF`, no `CRLF`).
+Usá un editor que respete los saltos de línea **LF**
 
 ### `users.conf` — usuarios de Linux
 
@@ -187,7 +182,7 @@ Normalmente no hace falta tocarlo. Hace, en orden: actualiza el sistema, crea lo
 vagrant up
 ```
 
-La primera vez tarda bastante (descarga de la box, actualización del sistema e instalación de T-Pot). Es normal que parezca quieto un buen rato.
+La primera vez tarda bastante (descarga de la imagen linux, actualización del sistema e instalación de T-Pot).
 
 Cuando termina, la VM se reinicia sola. Después:
 
@@ -215,7 +210,7 @@ T-Pot mueve el SSH al puerto **64295**. Vagrant espera el puerto 22, así que `v
 | Problema | Causa / solución |
 |---|---|
 | `Falta users.conf` o `tpot.conf` | No copiaste los `.example`. Ver paso 2. |
-| Error 404 al descargar la box | La box de Vagrant Cloud puede estar rota. Probá `vagrant box add almalinux/10 --provider virtualbox` para ver el error exacto y abrí un issue. |
+| Error 404 al descargar la box | La box de Vagrant Cloud puede estar rota. Probá `vagrant box add almalinux/10 --provider virtualbox` para ver el error exacto. |
 | Errores raros en la primera línea de `provision.sh` | Saltos de línea CRLF. Convertí a LF (`.gitattributes` lo evita al clonar con git). |
 | La instalación falla o se corta | Ver el mensaje en la consola. Con la VM aún en el SSH 22, `vagrant provision` reintenta. |
 | No puedo entrar por SSH con contraseña | El `sshd` de la box puede tener la autenticación por contraseña desactivada. Usá `vagrant ssh` antes de instalar T-Pot, o configurá una clave pública. |
